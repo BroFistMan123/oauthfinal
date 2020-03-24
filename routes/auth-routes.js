@@ -25,5 +25,21 @@ router.get('/google/callback', passport.authenticate('google'), (req, res) => {
     //res.send(req.user);    
     res.redirect('/profile/');
 });
+router.get('/facebook', passport.authenticate('facebook'));
+router.get('/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res) => {
+    res.redirect('/profile/');
+});  
 
+router.get('/spotify', passport.authenticate('spotify'), function (req, res) { });
+router.get('/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login' }), function (req, res) {
+    res.redirect('/profile/');
+});
+router.get('/github', passport.authenticate('github'));
+router.get('/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+    res.redirect('/profile/');
+});
+router.get('/linkedin', passport.authenticate('linkedin'));
+router.get('/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), function (req, res) {
+    res.redirect('/profile/');
+});
 module.exports = router;

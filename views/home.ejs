@@ -1,119 +1,195 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<!--
+	Intensify by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<style>
 
-<head>
-    <style>
-        #loader {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            z-index: 1;
-            width: 150px;
-            height: 150px;
-            margin: -75px 0 0 -75px;
-            border: 16px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 16px solid #3498db;
-            width: 120px;
-            height: 120px;
-            -webkit-animation: spin 2s linear infinite;
-            animation: spin 2s linear infinite;
-        }
+@media print {
+    .myDivToPrint {
+        background-color: white;
+        height: 100%;
+        width: 50%;
+        position: fixed;
+        top: 0;
+        left: 30;
+        margin: 0;
+        padding: 15px;
+        font-size: 14px;
+        line-height: 18px;
+    }
+}
+    #loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
 
-        @-webkit-keyframes spin {
-            0% {
-                -webkit-transform: rotate(0deg);
-            }
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
 
-            100% {
-                -webkit-transform: rotate(360deg);
-            }
-        }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
 
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
 
-        /* Add animation to "page content" */
-        .animate-bottom {
-            position: relative;
-            -webkit-animation-name: animatebottom;
-            -webkit-animation-duration: 1s;
-            animation-name: animatebottom;
-            animation-duration: 1s
-        }
+@keyframes animatebottom { 
+  from{ bottom:-100px; opacity:0 } 
+  to{ bottom:0; opacity:1 }
+}
 
-        @-webkit-keyframes animatebottom {
-            from {
-                bottom: -100px;
-                opacity: 0
-            }
+#myDiv {
+  display: none;
+  text-align: center;
+}
 
-            to {
-                bottom: 0px;
-                opacity: 1
-            }
-        }
+</style>
+<script> 
+var myVar;
+function loadingScreen() {
+  myVar = setTimeout(showPage, 2000);
+}
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("page-top").style.display = "block";
+}
+  function printDiv() { 
+            var divContents = document.getElementById("printMe").innerHTML; 
+            var a = window.open('', '', 'height=500, width=500'); 
+            a.document.write('<html>'); 
+            a.document.write('<body > <h1>Jambo Maternity Clinic </h1> <br>'); 
+            a.document.write(divContents); 
+            a.document.write('</body></html>'); 
+            a.document.close(); 
+            a.print(); }
+</script>
 
-        @keyframes animatebottom {
-            from {
-                bottom: -100px;
-                opacity: 0
-            }
-
-            to {
-                bottom: 0;
-                opacity: 1
-            }
-        }
-
-        #myDiv {
-            display: none;
-            text-align: center;
-        }
-    </style>
-    <script>
-        var myVar;
-        function loadingScreen() {
-            myVar = setTimeout(showPage, 2000);
-        }
-        function showPage() {
-            document.getElementById("loader").style.display = "none";
-            document.getElementById("page-top").style.display = "block";
-        }
-    </script>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Oauth Activity By Merhamdin Umbukan</title>
-</head>
-
+		<title>Intensify by TEMPLATED</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="css/main.css" />
+	</head>
+	
 <body onload="loadingScreen()">
     <div id="loader"></div>
     <div id="page-top" style="display:none;" class="animate-bottom">
-        <nav class="navbar navbar-expand-sm bg-light">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-             
-               
-            </ul>
-            <ul class="navbar-nav ml-auto"><li class="nav-item">
-                <a class="nav-link" href="auth/login">Login</a>
-            </li></ul>
-        </nav>
+		<!-- Header -->
+			<header id="header">
+				<nav class="left">
+					<a href="#menu"><span>Menu</span></a>
+				</nav>
+				<a href="/" class="logo">Almost-Website</a>
+				<nav class="right">
+					<a href="auth/login" class="button alt">Log in</a>
+				</nav>
+			</header>
 
-        <hr>
-    </div>
-</body>
+		<!-- Menu -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="/">Home</a></li>
+					
+				</ul>
+				<ul class="actions vertical">
+					<li><a href="auth/login" class="button fit">Login</a></li>
+				</ul>
+			</nav>
 
+		<!-- Banner -->
+			<section id="banner">
+				<div class="content">
+					<h1>A dedicated website</h1>
+					<p>built by people and for the people.</p>
+					<ul class="actions">
+						<li><a href="#one" class="button scrolly">About Us</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- One -->
+			<section id="one" class="wrapper">
+				<div class="inner flex flex-3">
+					<div class="flex-item left">
+						<div>
+							<h3>Made with Love</h3>
+							<p>Sleepless nights were worth it<br /> for this amazing creation.</p>
+						</div>
+						<div>
+							<h3>Kind of addicting</h3>
+							<p>to make as well as it is fun<br /> and pleasing to integrate webdev functions</p>
+						</div>
+					</div>
+					<div class="flex-item image fit round">
+						<img src="images/pic01.jpg" alt="" />
+					</div>
+					<div class="flex-item right">
+						<div>
+							<h3>Thanks to our instructor</h3>
+							<p>Sir Balaman for not leaving us behind<br /> and always teaching us things.</p>
+						</div>
+						<div>
+							<h3>A great experience</h3>
+							<p>to add to our arsenal as<br /> Computer Science and IT students.</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		<!-- Two -->
+			<section id="two" class="wrapper style1 special">
+				<div class="inner">
+					<h2>About Us</h2>
+					<figure>
+					    <blockquote>
+					        "Deployed with the help of Merhamdin Umbukan, Christian Talo and Gabriel Dalisay."
+					    </blockquote>
+					    <footer>
+					        <cite class="author">Web Dev 2</cite>
+					        <cite class="company">University of Immaculate Conception, 2020</cite>
+					    </footer>
+					</figure>
+				</div>
+			</section>
+
+		<!-- Three -->
+			
+
+		<!-- Scripts -->
+			<script src="js/jquery.min.js"></script>
+			<script src="js/jquery.scrolly.min.js"></script>
+			<script src="js/skel.min.js"></script>
+			<script src="js/util.js"></script>
+			<script src="js/main.js"></script>
+</div>
+	</body>
 </html>

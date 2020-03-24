@@ -2,24 +2,72 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
 const keys = require('./keys');
 const User = require('../models/user-model');
-
+const SpotifyStrategy = require('passport-spotify').Strategy;
+const FacebookStrategy = require('passport-facebook');
+const GitHubStrategy = require('passport-github').Strategy;
+const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 passport.serializeUser((user, done) => {
     done(null, user.id); // A piece of info and save it to cookies
 });
 
-passport.deserializeUser((id, done) => {
-    //Who's id is this?
-    User.query(`select row_to_json (u) from ( SELECT "oauth".findById('${id}') as "user") u`, (err, res) => {
-        if (err) {
-            console.log(err);
-        } else {
-            const user = res.rows[0].row_to_json.user;
-            console.log(">>>> deserializeUser >>>>> ", user);
-            done(null, user);
-        }
-    });
-});
+ passport.deserializeUser((id, done)=>
+    {
+        //Who's id is this?
+        User.query(`SELECT row_to_json (u) FROM ( SELECT "oauth".findById('${id}') AS "user") u`,(err,res)=>
+        {
+            if(err)
+            {
 
+            }
+            else
+            {
+                const user = res.rows[0].row_to_json.user;
+                console.log(user);
+                done(null, user); 
+            }        
+        });
+    });
+passport.use(
+    new LinkedInStrategy(
+        {
+            clientID: keys.linkedin.clientID,
+            clientSecret: keys.linkedin.clientSecret,
+            callbackURL: '/auth/linkedin/callback'
+        },
+        function (token, tokenSecret, profile, done) {
+
+            let image = profile.photos;
+            if (image.length > 0) {
+                image = profile.photos.url;
+            }
+            else {
+                image = 'https://komarketing.com/images/2014/08/linkedin-default.png';
+            }
+
+            User.query(
+                `CALL "oauth".insertIfUnique('${profile.id}', '${profile.displayName}', '${image}')`,
+                (err, res) => {
+                    const _user =
+                    {
+                        id: profile.id,
+                        name: profile.displayName,
+                        picture: image
+                    };
+
+                    if (err) {
+                        const currentUser = _user;
+                        done(null, currentUser);
+                    }
+                    else {
+                        const newUser = _user;
+                        done(null, newUser);
+                    }
+                });
+
+
+
+        }
+    ));
 passport.use(
     new GoogleStrategy({
         // options for the google strat
@@ -28,7 +76,7 @@ passport.use(
         clientSecret: keys.google.clientSecret
     }, (accessToken, refreshToken, profile, done) => {
         // check if user already exists in our database
-        console.log('##########################');
+        console.log('###########VIEWING###############');
         console.log(profile);
 
         // const sql1 = `select count(*) as result from "oauth".user where id=${profile.id}`;
@@ -53,9 +101,9 @@ passport.use(
         //     }            
         // });
 
-        User.query(`CALL "oauth".insert_when_unique('${profile.id}',
+        User.query(`CALL "oauth".insertifunique('${profile.id}',
                                                     '${profile.displayName}',
-                                                    '${profile.photos[0].value}');`,
+                                                    '${profile.photos[0].value}')`,
             (err, res) => {
                 console.log(">>>>>>>>>>>>>>>>>>>>>>");
                 const _user = {
@@ -81,4 +129,107 @@ passport.use(
 
 
     })
+);
+passport.use(
+    new SpotifyStrategy(
+        {
+            clientID: keys.spotify.clientID,
+            clientSecret: keys.spotify.clientSecret,
+            callbackURL: '/auth/spotify/callback'
+        },
+        (accessToken, refreshToken, expires_in, profile, done) => {
+
+            let image = profile._json.images;
+            if (image.length > 0) {
+                image = profile._json.images.url;
+            }
+            else {
+                image = 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png';
+            }
+
+            User.query(
+                `CALL "oauth".insertIfUnique('${profile.id}', '${profile.displayName}', '${image}')`,
+                (err, res) => {
+                    const _user =
+                    {
+                        id: profile.id,
+                        name: profile.displayName,
+                        picture: image
+                    };
+
+                    if (err) {
+                        const currentUser = _user;
+                        done(null, currentUser);
+                    }
+                    else {
+                        const newUser = _user;
+                        done(null, newUser);
+                    }
+                });
+        }
+    ));
+
+passport.use(
+    new FacebookStrategy(
+        {
+            clientID: keys.facebook.clientID,
+            clientSecret: keys.facebook.clientSecret,
+            callbackURL: "/auth/facebook/callback",
+            profileFields: ['id', 'displayName', 'name', 'gender', 'photos']
+        },
+        (accessToken, refreshToken, profile, cb) => {
+
+            User.query(
+                `CALL "oauth".insertIfUnique('${profile.id}', '${profile.displayName}', '${profile.photos[0].value}')`,
+                (err, res) => {
+                    const _user =
+                    {
+                        id: profile.id,
+                        name: profile.displayName,
+                        picture: profile.photos[0].value
+                    };
+
+                    if (err) {
+                        const currentUser = _user;
+                        cb(null, currentUser);
+                    }
+                    else {
+                        const newUser = _user;
+                        cb(null, newUser);
+                    }
+                }
+            );
+        }
+    ));
+
+passport.use(
+    new GitHubStrategy(
+        {
+            clientID: keys.github.clientID,
+            clientSecret: keys.github.clientSecret,
+            callbackURL: "/auth/github/callback"
+        },
+        (accessToken, refreshToken, profile, cb) => {
+            User.query(
+                `CALL "oauth".insertIfUnique('${profile.id}', '${profile.username}', '${profile.photos[0].value}')`,
+                (err, res) => {
+                    const _user =
+                    {
+                        id: profile.id,
+                        name: profile.displayName,
+                        picture: profile.photos[0].value
+                    };
+
+                    if (err) {
+                        const currentUser = _user;
+                        cb(null, currentUser);
+                    }
+                    else {
+                        const newUser = _user;
+                        cb(null, newUser);
+                    }
+                }
+            );
+        }
+    )
 );
