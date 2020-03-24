@@ -23,15 +23,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // set up routes
-app.use('/auth',authRoutes);
-app.use('/profile',profileRoutes);
+app.use('/auth', authRoutes);
+app.use('/profile', profileRoutes);
 
 // create home route
-app.get('/', (req, res)=>{
-    res.render('home', {user: req.user});
+app.get('/', (req, res) => {
+    res.render('home', { user: req.user });
 });
 
 // listen to requests
-app.listen(3000, ()=> {
+app.listen(3000, () => {
     console.log('app now listening for requests on port 3000');
 });
