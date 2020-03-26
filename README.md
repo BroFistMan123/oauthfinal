@@ -1,4 +1,4 @@
-# OAuth Demo by Clyde Balaman
+# OAuth Demo by Merhamdin Umbukan
 
 ## Part 1: Setting up NodeJS environment
 ```bash
@@ -308,4 +308,4 @@ OAuth Exercises (Part 5-8)
 > Note: Consider [Simple-DataTables](https://github.com/fiduswriter/Simple-DataTables) for a lightweight, extendable, dependency-free javascript HTML table plugin. Similar to jQuery DataTables, ***but without the jQuery dependency***.
 
 - [X] OAuth_Ex5: Add five more strategies. (e.g. Facebook, Twitter, Github, etc.)
-- [X] OAuth_Ex6: Push to Heroku (AppName: ```lastname-oauth.herokuapp.com``` )
+- [X] OAuth_Ex6: Push to Heroku (AppName: ```umbukan-oauth.herokuapp.com``` )
