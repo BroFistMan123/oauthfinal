@@ -14,6 +14,7 @@ app.use(passport.initialize());
 // set up view engine
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '/public')));
+
 // set up cookie-session
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000,

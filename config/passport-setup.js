@@ -2,8 +2,9 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
 const keys = require('./keys');
 const User = require('../models/user-model');
+
 const SpotifyStrategy = require('passport-spotify').Strategy;
-const FacebookStrategy = require('passport-facebook');
+const SlackStrategy = require("passport-slack").Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
 const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 passport.serializeUser((user, done) => {
@@ -169,38 +170,7 @@ passport.use(
         }
     ));
 
-passport.use(
-    new FacebookStrategy(
-        {
-            clientID: keys.facebook.clientID,
-            clientSecret: keys.facebook.clientSecret,
-            callbackURL: "/auth/facebook/callback",
-            profileFields: ['id', 'displayName', 'name', 'gender', 'photos']
-        },
-        (accessToken, refreshToken, profile, cb) => {
 
-            User.query(
-                `CALL "oauth".insertIfUnique('${profile.id}', '${profile.displayName}', '${profile.photos[0].value}')`,
-                (err, res) => {
-                    const _user =
-                    {
-                        id: profile.id,
-                        name: profile.displayName,
-                        picture: profile.photos[0].value
-                    };
-
-                    if (err) {
-                        const currentUser = _user;
-                        cb(null, currentUser);
-                    }
-                    else {
-                        const newUser = _user;
-                        cb(null, newUser);
-                    }
-                }
-            );
-        }
-    ));
 
 passport.use(
     new GitHubStrategy(
@@ -210,6 +180,7 @@ passport.use(
             callbackURL: "/auth/github/callback"
         },
         (accessToken, refreshToken, profile, cb) => {
+            console.log(profile);
             User.query(
                 `CALL "oauth".insertIfUnique('${profile.id}', '${profile.username}', '${profile.photos[0].value}')`,
                 (err, res) => {
@@ -233,3 +204,37 @@ passport.use(
         }
     )
 );
+
+passport.use(
+    new SlackStrategy(
+        {
+            clientID: keys.slack.clientID,
+            clientSecret: keys.slack.clientSecret,
+            callbackURL: '/auth/slack/callback'
+        },
+        (accessToken, refreshToken, expires_in, profile, done) => {
+console.log(profile);
+         
+
+            User.query(
+                `CALL "oauth".insertIfUnique('${profile.user.id}', '${profile.user.name}', '${profile.user.image_72}')`,
+                (err, res) => {
+                    const _user =
+                    {
+                        id: profile.user.id,
+                        name: profile.user.name,
+                        picture: profile.user.image_72
+                    };
+
+                    if (err) {
+                        const currentUser = _user;
+                        done(null, currentUser);
+                    }
+                    else {
+                        const newUser = _user;
+                        done(null, newUser);
+                    }
+                });
+        }
+    ));
+

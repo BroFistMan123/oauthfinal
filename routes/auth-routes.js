@@ -3,8 +3,18 @@ const passport = require('passport');
 
 // auth login
 router.get('/login', (req, res) => {
-    res.render('login', { user: req.user });
+    if (req.user) {
+        // User is not logged in
+        res.redirect('/profile/');
+    }
+    else {
+        res.render('login', { user: req.user });
+    }
+        // User is logged in
+       
+
 });
+
 
 // auth logout
 router.get('/logout', (req, res) => {
@@ -25,11 +35,11 @@ router.get('/google/callback', passport.authenticate('google'), (req, res) => {
     //res.send(req.user);    
     res.redirect('/profile/');
 });
-router.get('/facebook', passport.authenticate('facebook'));
-router.get('/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res) => {
-    res.redirect('/profile/');
-});  
 
+router.get('/slack', passport.authenticate('slack'));
+router.get('/slack/callback', passport.authenticate('slack', { failureRedirect: '/login' }), function (req, res) {
+    res.redirect('/profile/');
+});
 router.get('/spotify', passport.authenticate('spotify'), function (req, res) { });
 router.get('/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login' }), function (req, res) {
     res.redirect('/profile/');

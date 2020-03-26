@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <style>
+        @media print {
+            .myDivToPrint {
+                background-color: white;
+                height: 100%;
+                width: 50%;
+                position: fixed;
+                top: 0;
+                left: 30;
+                margin: 0;
+                padding: 15px;
+                font-size: 14px;
+                line-height: 18px;
+            }
+        }
+
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Add animation to "page content" */
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+
+        @-webkit-keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+
+            to {
+                bottom: 0px;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        #myDiv {
+            display: none;
+            text-align: center;
+        }
+    </style>
+    <script>
+
+        var myVar;
+        function loadingScreen() {
+            myVar = setTimeout(showPage, 2000);
+        }
+        function showPage() {
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("page-top").style.display = "block";
+        }
+        function printDiv() {
+            var divContents = document.getElementById("printMe").innerHTML;
+            var a = window.open('', '', 'height=500, width=500');
+            a.document.write('<html>');
+            a.document.write('<body > <h1>Jambo Maternity Clinic </h1> <br>');
+            a.document.write(divContents);
+            a.document.write('</body></html>');
+            a.document.close();
+            a.print();
+        }
+    </script>
+    <link rel="stylesheet" href="/css/main.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <title>List of employees</title>
+</head>
+
+<body style="background-color: rgb(230, 228, 228)" onload="loadingScreen()">
+    <div id="loader"></div>
+    <div id="page-top" style="display:none;" class="animate-bottom">
+        <header id="header">
+            <nav class="left">
+                <a href="#menu"><span>Menu</span></a>
+            </nav>
+            <a href="/profile" class="logo">Almost-Website</a>
+            <nav class="right">
+                <a href="/auth/logout" class="button alt">Log out</a>
+            </nav>
+        </header>
+
+        <!-- Menu -->
+        <nav id="menu">
+            <ul class="links">
+                <li><a href="/profile">Home</a></li>
+
+            </ul>
+            <ul class="actions vertical">
+                <li><a href="#" class="button fit">Login</a></li>
+            </ul>
+        </nav>
+
+        <div class="container mt-2" style="background-color: rgb(255, 255, 255);">
+            <div class="row">
+                <div class="col">
+
+                    <section id="banner1">
+                        <div class="content"></div>
+                        <h1>Take a look at employee list</h1>
+                        <div class="table-responsive mt-5">
+                            <table class="table table-bordered table-striped table-hover users-table mb-2">
+                                <thead>
+                            
+                                    <tr>
+                                        <th>Employees</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(var i=0 ; i < rowCount; i++){ %>
+                                    <tr>
+                                        <td><%= rows[i].row_to_json.fullname %></td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Employees</th>
+                            
+                                    </tr>
+                                </tfoot>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                </div>
+            </div>
+
+
+            <section id="two" class="wrapper style1 special">
+                <div class="inner">
+                    <h2>About Us</h2>
+                    <figure>
+                        <blockquote>
+                            "Deployed with the help of Merhamdin Umbukan, Christian Talo and Gabriel Dalisay."
+                        </blockquote>
+                        <footer>
+                            <cite class="author">Web Dev 2</cite>
+                            <cite class="company">University of Immaculate Conception, 2020</cite>
+                        </footer>
+                    </figure>
+                </div>
+            </section>
+            <!-- Scripts -->
+            <script src="/js/jquery.min.js"></script>
+            <script src="/js/jquery.scrolly.min.js"></script>
+            <script src="/js/skel.min.js"></script>
+            <script src="/js/util.js"></script>
+            <script src="/js/main.js"></script>
+        </div>
+        <link rel="stylesheet" type="text/css"
+            href="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.18/datatables.min.css" />
+        <script type="text/javascript"
+            src="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.18/datatables.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function () {
+                $(".users-table").DataTable();
+            });
+        </script>
+</body>
+
+</html>
