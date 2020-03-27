@@ -1,1 +1,1 @@
-web: npm run oauth-start
+web: node index.js
