@@ -22,8 +22,8 @@ const keys =
     },
     github:
     {
-        clientID: 'Iv1.4515d039f23ef469',
-        clientSecret: '7ccb5db31b7ad2fad278e7bfc2d33929bcd4ef14'
+        clientID: 'Iv1.c601515f6a41188b',
+        clientSecret: '894eee9cd47b0e9916401bfcf17c38126d71190c'
     },
     postgresdb:
     {
