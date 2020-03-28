@@ -31,7 +31,14 @@ app.use('/profile', profileRoutes);
 
 // create home route
 app.get('/', (req, res) => {
-    res.render('home', { user: req.user });
+    if (req.user) {
+        // User is not logged in
+        res.redirect('/profile/');
+    }
+    else {
+        res.render('home', { user: req.user });
+    }
+   
 });
 
 // listen to requests
